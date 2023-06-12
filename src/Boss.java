@@ -1,5 +1,5 @@
 package src;
 
-public class Boss extends Enemie{
+public class Boss extends Enemy{
     
 }
