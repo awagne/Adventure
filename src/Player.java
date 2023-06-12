@@ -9,9 +9,10 @@ public class Player {
     private int health = 100;
     private int attack = 1;
     private boolean hasWeapon = false;
-    private int armour = 0;
     private Weapon weapon = new Weapon(0);
     private String status = "None";
+    private boolean hasArmour = false;
+    private Armor armor;
     public List<ItemPair> items = Collections.emptyList();
     public List<String> itemNames = Collections.emptyList();
 
@@ -111,6 +112,15 @@ public class Player {
             }
         }
 
+    }
+
+    public void getHit(int damage){
+        if(hasArmour){
+            armor.Hit(this, damage);
+        }
+        else{
+            health -= damage;
+        }
     }
 
 }
