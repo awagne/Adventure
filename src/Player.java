@@ -1,4 +1,6 @@
 package src;
+import java.util.*;
+import javafx.util.Pair;
 
 public class Player {
     private int level = 1;
@@ -6,8 +8,12 @@ public class Player {
     private int max_health = 100;
     private int health = 100;
     private int attack = 1;
-    private String weapon = "none";
+    private boolean hasWeapon = false;
     private int armour = 0;
+    private Weapon weapon = new Weapon(0);
+    private String status = "None";
+    public List<ItemPair> items = Collections.emptyList();
+    public List<String> itemNames = Collections.emptyList();
 
     public Player(){
 
@@ -25,12 +31,32 @@ public class Player {
         return health;
     }
 
+    public void setHealth(int value){
+        health = value;
+    }
+
     public int getAttack(){
         return attack;
     }
 
     public int getArmour(){
         return armour;
+    }
+
+    public boolean hasWeapon(){
+        return hasWeapon;
+    }
+
+    public Weapon getWeapon(){
+        return weapon;
+    }
+
+    public String getStatus(){
+        return status;
+    }
+
+    public void setStatus(String status){
+        this.status = status;
     }
 
     public void LevelUp(){
@@ -40,4 +66,51 @@ public class Player {
         level ++;
         nextLevel = level * 25;
     }
+
+    public Pair<Boolean , Integer> Attack(){
+        Pair<Boolean, Integer> result = new Pair<Boolean, Integer>(hasWeapon(), getAttack() + getWeapon().getAttack());
+
+        return result;
+    }
+
+    public void getItem(String item){
+        if(itemNames.contains(item)){
+            for(int i = 0; i < items.size(); i ++){
+                if(item == items.get(i).getKey().getName()){
+                    items.get(i).setValue(items.get(i).getValue() + 1);
+                }
+            }
+        }
+        else{
+            if(item == "Potion"){
+                itemNames.add("Potion");
+                items.add(new ItemPair(new Potion(), 1));
+            }
+            else if(item == "Fire"){
+                itemNames.add("Fire");
+                items.add(new ItemPair(new Fire(), 1));
+            }
+            else if(item == "Freeze"){
+                itemNames.add("Freeze");
+                items.add(new ItemPair(new Freeze(), 1));
+            }
+        }
+    }
+
+    public void useItem(String item){
+
+        for(int i = 0; i < items.size(); i ++){
+            if(item == items.get(i).getKey().getName()){
+                if(itemNames.contains(item)){
+                    items.get(i).setValue(items.get(i).getValue() - 1);
+                    items.get(i).getKey().useItem(this);
+                    if(items.get(i).getValue() == 0){
+                        itemNames.remove(item);
+                    }
+                }
+            }
+        }
+
+    }
+
 }
