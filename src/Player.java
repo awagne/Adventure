@@ -40,8 +40,8 @@ public class Player {
         return attack;
     }
 
-    public int getArmour(){
-        return armour;
+    public Armor getArmour(){
+        return armor;
     }
 
     public boolean hasWeapon(){
