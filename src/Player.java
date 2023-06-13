@@ -1,6 +1,5 @@
 package src;
 import java.util.*;
-import javafx.util.Pair;
 
 public class Player {
     private int level = 1;
@@ -9,7 +8,7 @@ public class Player {
     private int health = 100;
     private int attack = 1;
     private boolean hasWeapon = false;
-    private Weapon weapon = new Weapon(0);
+    private Weapon weapon;
     private String status = "None";
     private boolean hasArmour = false;
     private Armor armor;
@@ -68,10 +67,13 @@ public class Player {
         nextLevel = level * 25;
     }
 
-    public Pair<Boolean , Integer> Attack(){
-        Pair<Boolean, Integer> result = new Pair<Boolean, Integer>(hasWeapon(), getAttack() + getWeapon().getAttack());
-
-        return result;
+    public void Attack(Enemy villain){
+        if(hasWeapon){
+            villain.Hit(attack + weapon.getAttack(), status);
+        }
+        else{
+            villain.Hit(attack, status);
+        }
     }
 
     public void getItem(String item){
