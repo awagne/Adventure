@@ -70,9 +70,11 @@ public class Player {
     public void Attack(Enemy villain){
         if(hasWeapon){
             villain.Hit(attack + weapon.getAttack(), status);
+            status = "None";
         }
         else{
             villain.Hit(attack, status);
+            status = "None";
         }
     }
 
