@@ -2,10 +2,10 @@ package src;
 
 public class Enemy {
 
-    boolean burning = false;
-    boolean frozen = false;
-    int health = 100;
-    int attack = 1;
+    private boolean burning = false;
+    private boolean frozen = false;
+    private int health = 100;
+    private int attack = 1;
 
     public Enemy(){
         
@@ -45,5 +45,13 @@ public class Enemy {
 
     public int getHealth(){
         return health;
+    }
+
+    public boolean getFrozen(){
+        return frozen;
+    }
+
+    public boolean getBurning(){
+        return burning;
     }
 }
