@@ -6,9 +6,18 @@ public class Enemy {
     private boolean frozen = false;
     private int health = 100;
     private int attack = 1;
+    private String name = "";
 
     public Enemy(){
         
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return name;
     }
 
     public void Hit(int damage, String status){
@@ -29,6 +38,7 @@ public class Enemy {
         }
         
         player.getHit(attack);
+        System.out.println("You got hit by " + this.name + " for " + attack + " hit points");
     }
 
     public void setAttack(int val){

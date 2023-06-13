@@ -12,8 +12,12 @@ public class Player {
     private String status = "None";
     private boolean hasArmour = false;
     private Armor armor;
+    private boolean alive = true;
+
     public ArrayList<ItemPair> items = new ArrayList<ItemPair>();
     public ArrayList<String> itemNames = new ArrayList<String>();
+    public ArrayList<ArmorPair> armorList = new ArrayList<ArmorPair>();
+    public ArrayList<String> armorNames = new ArrayList<String>();
 
     public Player(){
 
@@ -43,7 +47,7 @@ public class Player {
         return attack;
     }
 
-    public Armor getArmour(){
+    public Armor getArmor(){
         return armor;
     }
 
@@ -63,22 +67,39 @@ public class Player {
         this.status = status;
     }
 
+    public boolean getAlive(){
+        return alive;
+    }
+
+    public void setAlive(boolean status){
+        alive = status;
+    }
+
     public void LevelUp(){
         maxHealth += 50;
         health = maxHealth;
         attack += 2;
         level ++;
         nextLevel = level * 25;
+
+        System.out.println("You leveled up!!");
+        System.out.println("Level " + level);
+        System.out.println("MAx Health + 50");
+        System.out.println("Attack + 2");
+        System.out.println("Exp till next level " + nextLevel);
     }
 
     public void Attack(Enemy villain){
         if(hasWeapon){
             villain.Hit(attack + weapon.getAttack(), status);
             status = "None";
+
+            System.out.println("You hit" + villain.getName() + " for " + attack + weapon.getAttack() + " hit points");
         }
         else{
             villain.Hit(attack, status);
             status = "None";
+            System.out.println("You hit" + villain.getName() + " for " + attack + " hit points");
         }
     }
 
@@ -88,6 +109,14 @@ public class Player {
 
     public List<String> getItemNames(){
         return itemNames;
+    }
+
+    public List<ArmorPair> getArmorList(){
+        return armorList;
+    }
+
+    public List<String> getArmorNames(){
+        return armorNames;
     }
 
     public void getItem(String item){
@@ -102,14 +131,17 @@ public class Player {
             if(item == "Potion"){
                 itemNames.add("Potion");
                 items.add(new ItemPair(new Potion(), 1));
+                System.out.println("You recieved 1 Potion!");
             }
             else if(item == "Fire"){
                 itemNames.add("Fire");
                 items.add(new ItemPair(new Fire(), 1));
+                System.out.println("You recieved 1 Fire item!");
             }
             else if(item == "Freeze"){
                 itemNames.add("Freeze");
                 items.add(new ItemPair(new Freeze(), 1));
+                System.out.println("You recieved 1 Freeze Item!");
             }
         }
     }
@@ -125,6 +157,8 @@ public class Player {
                         itemNames.remove(item);
                         items.remove(i);
                     }
+
+                    System.out.println("You used 1 " + item);
                 }
             }
         }
@@ -134,10 +168,65 @@ public class Player {
     public void getHit(int damage){
         if(hasArmour){
             armor.Hit(this, damage);
+            if(armor.getDurability() <= 0){
+                for(int i = 0; i < armorList.size(); i ++){
+                    if(armor.getType() == armorList.get(i).getKey().getType()){
+                        if(armorNames.contains(armor.getType())){
+                            armorList.get(i).setValue(armorList.get(i).getValue() - 1);
+                            if(armorList.get(i).getValue() == 0){
+                                armorNames.remove(armor.getType());
+                                armorList.remove(i);
+                            }
+                            System.out.println("You're armor broke!");
+                            equipArmor();
+                        }
+                    }
+                }
+            }
         }
         else{
             health -= damage;
         }
     }
 
+    public void setArmor(String armor){
+        
+        if(armorNames.contains(armor)){
+            for(int i = 0; i < armorList.size(); i ++){
+                if(armor == armorList.get(i).getKey().getType()){
+                    armorList.get(i).addValue(1);
+                }
+            }
+        }
+        else{
+            if(armor == "Rags"){
+                hasArmour = true;
+                armorNames.add("Rags");
+                this.armor = new Rags();
+                armorList.add(new ArmorPair(this.armor, 1));
+                System.out.println("You recieved Rags!");
+                System.out.println("Durability: 5");
+                System.out.println("Defense: 2");
+            }
+            else if(armor == "Steel"){
+                hasArmour = true;
+                armorNames.add("Steel");
+                this.armor = new Steel();
+                armorList.add(new ArmorPair(this.armor, 1));
+                System.out.println("You recieved Steel Armor!");
+                System.out.println("Durability: 20");
+                System.out.println("Defense: 10"); 
+            }
+        }
+    }
+
+    public void equipArmor(){
+        if(armorList.size() > 0){
+            armor.setDurability(armor.getMaxDurability());;
+            System.out.println("Now wearing " + armor.getType() + " armor");
+        }
+    }
+
 }
+
+

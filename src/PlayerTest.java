@@ -46,6 +46,49 @@ public class PlayerTest {
 
         player.useItem("Potion");
         assertEquals(Collections.emptyList(), player.getItems());
-        assertEquals(0, player.getItems().size());
+        assertEquals(0, player.getItemNames().size());
+    }
+
+    @Test
+    public void ArmorTest(){
+        Player player = new Player();
+        Enemy enemy = new Enemy();
+
+        assertEquals(Collections.emptyList(), player.getArmorList());
+        player.setArmor("Rags");
+        assertEquals(1, player.getArmorList().size());
+        assertEquals("Rags", player.getArmorNames().get(0));
+        assertEquals(100, player.getHealth());
+
+        enemy.setAttack(5);
+        enemy.Attack(player);
+        enemy.Attack(player);
+        enemy.Attack(player);
+        enemy.Attack(player);
+        enemy.Attack(player);
+        
+        assertEquals(85, player.getHealth());
+        assertEquals(0,player.getArmor().getDurability());
+        assertEquals(Collections.emptyList(), player.getArmorList());
+        assertEquals(0, player.getArmorNames().size());
+
+        player.setArmor("Rags");
+        player.setArmor("Rags");
+        assertEquals(1, player.getArmorList().size());
+        assertEquals(2, player.getArmorList().get(0).getValue());
+        assertEquals("Rags", player.getArmorNames().get(0));
+        assertEquals(85, player.getHealth());
+
+        enemy.setAttack(5);
+        enemy.Attack(player);
+        enemy.Attack(player);
+        enemy.Attack(player);
+        enemy.Attack(player);
+        enemy.Attack(player);
+
+        assertEquals(70, player.getHealth());
+        assertEquals(5,player.getArmor().getDurability());
+        assertEquals("Rags", player.getArmorNames().get(0));
+        assertEquals(1, player.getArmorList().get(0).getValue());
     }
 }
