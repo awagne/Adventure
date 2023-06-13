@@ -4,7 +4,7 @@ import java.util.*;
 public class Player {
     private int level = 1;
     private int nextLevel = 25;
-    private int max_health = 100;
+    private int maxHealth = 100;
     private int health = 100;
     private int attack = 1;
     private boolean hasWeapon = false;
@@ -12,8 +12,8 @@ public class Player {
     private String status = "None";
     private boolean hasArmour = false;
     private Armor armor;
-    public List<ItemPair> items = Collections.emptyList();
-    public List<String> itemNames = Collections.emptyList();
+    public ArrayList<ItemPair> items = new ArrayList<ItemPair>();
+    public ArrayList<String> itemNames = new ArrayList<String>();
 
     public Player(){
 
@@ -29,6 +29,10 @@ public class Player {
 
     public int getHealth(){
         return health;
+    }
+
+    public int getMaxHealth(){
+        return maxHealth;
     }
 
     public void setHealth(int value){
@@ -60,8 +64,8 @@ public class Player {
     }
 
     public void LevelUp(){
-        max_health += 50;
-        health = max_health;
+        maxHealth += 50;
+        health = maxHealth;
         attack += 2;
         level ++;
         nextLevel = level * 25;
@@ -76,6 +80,14 @@ public class Player {
             villain.Hit(attack, status);
             status = "None";
         }
+    }
+
+    public List<ItemPair> getItems(){
+        return items;
+    }
+
+    public List<String> getItemNames(){
+        return itemNames;
     }
 
     public void getItem(String item){
@@ -111,6 +123,7 @@ public class Player {
                     items.get(i).getKey().useItem(this);
                     if(items.get(i).getValue() == 0){
                         itemNames.remove(item);
+                        items.remove(i);
                     }
                 }
             }
