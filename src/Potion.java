@@ -7,6 +7,13 @@ public class Potion extends Item {
     }
 
     public void useItem(Player player){
-        player.setHealth((int)(player.getHealth() * 1.25));
+        int recovery = (int)(player.getHealth() * 1.25);
+
+        if(player.getMaxHealth() > recovery){
+            player.setHealth(recovery);
+        }
+        else{
+            player.setHealth(player.getMaxHealth());
+        }
     }
 }
